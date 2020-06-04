@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: #fff;
+  z-index: 1001; }
+  .preloader .preloader__image {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 512px;
+    height: 512px;
+    margin-top: -256px;
+    margin-left: -256px;
+    background: url("giphy.gif") no-repeat 50% 50%; }
+
+.loaded_hiding .preloader {
+  transition: 0.3s opacity;
+  opacity: 0; }
+
+.loaded .preloader {
+  display: none; }

@@ -1,0 +1,356 @@
+import React from 'react';
+import './cart.css';
+import { Component } from 'react';
+import {connect} from 'react-redux';
+import {addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData} from '../../actions/actionCreater';
+import {Link} from 'react-router-dom';
+import Glovo from '../Glovo/Glovo';
+import DeleteButton from "../DeleteButton/DeleteButton";
+import Input from "../Input/Input";
+import Axios from "axios";
+class Cart extends Component{
+    state = {
+        fullPrice: 0,
+        userId: localStorage.getItem("id"),
+        userBonus: 0,
+        payType: "",
+        bonusCart: 0,
+        bonus: 0,
+        value: "Київ",
+        isCartStyle: true,
+        formControls: {
+            username: {
+                value: "",
+                type: "text",
+                placeholder: "Ім'я"
+            },
+            telNumber: {
+                value: "",
+                placeholder: "Номер телефону",
+                type: "text"
+            },
+            email: {
+                value: "",
+                placeholder: "Email",
+                type: "email"
+            },
+        },
+        addressControls: {
+            address: {
+                value: "",
+                type: "text",
+                placeholder: "Адреса"
+            },
+            house: {
+                value: "",
+                type: "text",
+                placeholder: "Дім"
+            },
+            flat: {
+                value: "",
+                type: "text",
+                placeholder: "Квартира"
+            },
+            driveway: {
+                value: "",
+                type: "text",
+                placeholder: "Під'їзд"
+            },
+            floor: {
+                value: "",
+                type: "text",
+                placeholder: "Поверх"
+            },
+        }
+    } 
+    
+    componentDidMount(){
+        this.handleChange = this.handleChange.bind(this);
+        this.handleBonus = this.handleBonus.bind(this);
+        this.handlePay = this.handlePay.bind(this);
+        this.getCurrentUser();
+    }
+    handleBonus = (event) =>{
+        this.setState({
+            bonusCart: event.target.value
+        })
+    }
+    handlePay = (event) => {
+        this.setState({
+            handlePay: event.target.value
+        })
+    }
+    getCurrentUser = () => {
+        const {userId} = this.state;
+        Axios.get(`http://localhost:3000/users/${userId}`).then((res =>{
+            this.setState({
+                userBonus: res.data.bonuses
+            })
+            console.log(res.data);
+        }))
+    }
+
+    priceCounting = (arr) => {
+        const {setFullPrice, setBonus} = this.props;
+        let fullPrice = 0;
+        arr.forEach(element => {
+           const {price, amount} = element;
+            fullPrice += price*amount;
+        });
+        setFullPrice(fullPrice - this.state.bonusCart);
+        setBonus(fullPrice.toFixed(2)*0.05);
+        return fullPrice; 
+    }
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    onChangeHandler = (event, controlName) => {
+        const formControls = { ...this.state.formControls };
+        const control = { ...formControls[controlName] };
+        control.value = event.target.value;
+        formControls[controlName] = control;
+        this.setState({
+            formControls,
+        });
+        console.log(formControls.username.value);
+    }
+
+    renderInputs = () => Object.keys(this.state.formControls).map((controlName, index) => {
+        const control = this.state.formControls[controlName];
+        return <Input
+            key={controlName + index}
+            type={control.type}
+            value={control.value}
+            placeholder={control.placeholder}
+            className={"edit"}
+            onChange={(event) => this.onChangeHandler(event, controlName)}
+        />;
+    })
+
+    renderInputsAddress = () => Object.keys(this.state.addressControls).map((controlName, index) => {
+        const control = this.state.addressControls[controlName];
+        return <Input
+            key={controlName + index}
+            type={control.type}
+            value={control.value}
+            placeholder={control.placeholder}
+            className={"edit"}
+            onChange={(event) => this.onChangeHandlerAddress(event, controlName)}
+        />;
+    })
+
+    onChangeHandlerAddress = (event, controlName) => {
+        const formControls = { ...this.state.addressControls };
+        const control = { ...formControls[controlName] };
+        control.value = event.target.value;
+        formControls[controlName] = control;
+        this.setState({
+            addressControls: formControls,
+        });
+        // console.log(formControls.username.value);
+    }
+    // getCountry = () =>{
+    //     Axios.get("https://api.visicom.ua/data-api/4.0/ru/search/adr_street.json?text=Киев,%20Крещатик&key=bcde63ba77862fdd760ae229468b1ec8")
+    // }
+
+    setStyleCart = () => {
+        const {isCartStyle} = this.state;
+        switch(isCartStyle){
+            case true: {
+                this.setState({isCartStyle: false});
+                break;
+            }
+            case false: {
+                this.setState({isCartStyle: true});
+                break;
+            }
+            default: console.log(0);
+        }
+    }
+
+    // deleteFunc = () =>{
+    //     const {pizza, isAmount} = this.props;
+    //     if(pizza === []){
+    //         isAmount(true);
+    //     }
+        
+    // }
+
+    renderCart(arr){
+        return arr.map(item =>{
+            const {name,price,components, img, amount, id, size} = item;
+            const {addAmount, subAmount, deletePizza, isAmount} = this.props;
+            // arr.forEach(element => {
+            //     this.setState({
+            //         fullPrice: element.amount * element.price1
+            //     }) 
+            // });
+            return(
+                <div className="cart__wrapper">
+                        <div className="pizza__cart">
+                            <div className="img__block">
+                                <img src={img} alt="no_pizza" className="pizza__photo"/>
+                            </div>
+                                <p className="cart__label name_cart">{name}</p>
+                                <p className="cart__label price_cart">{price} грн.</p>
+                            <p className="cart__label components_cart">{components}</p> 
+                                <div className="change__amount">
+                                    <div className="minus__cart" onClick={() => subAmount(amount,id, price)}>-</div>
+                                    <p className="amount">{amount}</p>
+                                    <div className="plus__cart" onClick={() => addAmount(amount, id, price)}>+</div>
+                                </div>
+                            <div className="delete__cart" onClick={() => deletePizza(id, price)}><DeleteButton /></div>
+                    </div>
+                    
+                    
+                </div>
+            );
+        })
+    }
+
+    setMyOrder = () =>{
+        const {setOrderData,pizza} =this.props;
+        const {formControls, addressControls,value} = this.state;
+        let pizzaName = ""
+        pizza.map(item =>{
+            const {name} = item;
+            pizzaName += name + "; ";
+        })
+        let address = "місто " + value + " вул. " + addressControls.address.value + ","+ addressControls.house.value + " кв." + addressControls.flat.value + " під'їзд №: " + addressControls.driveway.value + " поверх: " + addressControls.floor.value;
+        setOrderData(address,pizzaName,2,formControls.username.value);
+    }
+
+    render(){
+        const {pizza} = this.props;
+        const {isCartStyle, formControls, addressControls, userBonus} = this.state;
+        const items = this.renderCart(pizza);
+        const fullCost = this.priceCounting(pizza);
+        console.log(pizza);
+        return(
+            <div className="full__cart">         
+                <div className="order__list">
+                    <p className="order__label">Ваше замовлення:</p>
+                    {items}
+                    <div className="order__full__price">
+                        <p className="full__price">До сплати: {fullCost.toFixed(2)} грн.</p>      
+                        <p className="full__price">Бонусів: {(fullCost.toFixed(2)*0.05).toFixed(2)}</p> 
+                    </div>
+                    <Glovo />
+                    <p className="order__label">Оформлення замовлення:</p>
+                    <div className="myOrder_type">
+                    <div className="type__order">
+                        <div className={isCartStyle ? "delivery__order" : "delivery__order deliv"} onClick={this.setStyleCart}>
+                            <i className="fas fa-bicycle"></i>
+                            <p className="order__type" >Доставка</p>
+                        </div>
+                        <div className={isCartStyle===false ? "solo__deliv__order" : "solo__deliv__order deliv"} onClick={this.setStyleCart}>
+                            <i className="fas fa-home"></i>
+                            <p className="order__type">Самовивіз</p>
+                        </div>
+                    </div>
+
+                    <div className={isCartStyle ? "check__form" : "none"}>
+                        <div className="contacts">
+                            <p className="main__label__cart">Контакти</p>
+                            <div className="edits__contacts">
+                               {this.renderInputs()}
+                                {/* <input type="text" placeholder="Ім'я" className="edit"/>
+                                <input type="text" placeholder="Телефон" className="edit"/>
+                                <input type="text" placeholder="Email" className="edit"/> */}
+                            </div>
+                        </div>
+
+                        <div className="adress">
+                            <p className="main__label__cart">Адрес</p>
+                            <div className="edits__adress">
+                                <select name="" id="" className="edit" placeholder="Місто" value={this.state.value} onChange={this.handleChange}>
+                                    <option value="Київ">Київ</option>
+                                    <option value="Запоріжжя">Запоріжжя</option>
+                                </select>
+                                {this.renderInputsAddress()}
+                            </div>
+                        </div>
+
+                        <div className="payment">
+                            <p className="main__label__cart">Оплата</p>
+                            <div className="edits__payment">
+                                <select name="" id="" className="edit">
+                                    <option value="" selected disabled>Оберіть купон</option>
+                                    <option value="">-25% на другу піцу</option>
+                                    <option value="">Разом дешевше</option>
+                                </select>
+
+                                <select name="" id="" className="edit">
+                                    <option value="" selected disabled>Оберіть спосіб оплати</option>
+                                    <option value="">Готівка</option>
+                                    <option value="">Картою кур'єру</option>
+                                    <option value="">LiqPay</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className={isCartStyle===false ? "check__form" : "none"}>
+                        <div className="contacts">
+                            <p className="main__label__cart">Контакти</p>
+                            <div className="edits__contacts">
+                               {this.renderInputs()}
+                                {/* <input type="text" placeholder="Ім'я" className="edit"/>
+                                <input type="text" placeholder="Телефон" className="edit"/>
+                                <input type="text" placeholder="Email" className="edit"/> */}
+                            </div>
+                        </div>
+
+                        <div className="adress">
+                            <p className="main__label__cart">Адрес</p>
+                            <div className="edits__adress">
+                                <select name="" id="" className="edit" placeholder="Місто" value={this.state.value} onChange={this.handleChange}>
+                                    <option value="Київ">Київ</option>
+                                    <option value="Запоріжжя">Запоріжжя</option>
+                                </select>
+                                <select name="" id="" className="edit adress_edit">
+                                    <option value="">Оберіть ресторан</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="payment">
+                            <p className="main__label__cart">Оплата</p>
+                            <div className="edits__payment">
+                                <select name="" id="" className="edit" value={this.state.payType} onChange={this.handlePay}>
+                                    <option value="" selected disabled>Оберіть купон</option>
+                                    <option value="">-25% на другу піцу</option>
+                                    <option value="">Разом дешевше</option>
+                                </select>
+
+                                <select name="" id="" className="edit">
+                                    <option value="" selected disabled>Оберіть спосіб оплати</option>
+                                    <option value="cash">Готівка</option>
+                                    <option value="card">Картою кур'єру</option>
+                                    <option value="liqpay">LiqPay</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="bonus_payment">
+                        <Link to='/payment'><button className="payment__btn" onClick={this.setMyOrder()}>Замовити</button></Link>
+                        <div className="right-panel__cart">
+                            <p className="full__price">До сплати: {fullCost.toFixed(2) - this.state.bonusCart} грн.</p>
+                            <p className="full__price">Бонусів для списання: <input className="bonus__input" value={this.state.bonusCart} onChange={this.handleBonus} placeholder={userBonus} type="number" min="0" max={userBonus}/></p> 
+                        </div>
+                             
+                    </div>
+                    </div>
+                </div> 
+            </div>
+        );
+    }
+}
+export default connect(state=>({
+    pizza: state.pizza,
+    myPrice: state.price,
+    myBonus: state.bonus
+}),{addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData})(Cart);

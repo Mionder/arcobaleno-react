@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+.drink__card {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  padding: 10px 0px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  border-radius: 25px;
+  transition: 0.25s; }
+  .drink__card img {
+    max-width: 400px;
+    max-height: 300px;
+    border-radius: 25px;
+    padding: 0px 10px; }
+  .drink__card .name__drink {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: #222;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: flex-start; }
+  .drink__card .info__drink {
+    padding: 0px 20px; }
+  .drink__card .size__drink {
+    display: flex;
+    margin: auto;
+    border-radius: 15px;
+    flex-grow: 1;
+    background-color: #f8f8f8;
+    width: 250px;
+    border: 1px solid rgba(0, 0, 0, 0.08); }
+    .drink__card .size__drink .size__small__drink,
+    .drink__card .size__drink .size__normal__drink {
+      min-width: 125px;
+      font-size: 14px;
+      overflow: hidden;
+      height: 30px;
+      flex-grow: 0;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer; }
+    .drink__card .size__drink .active {
+      background-color: #4f4f4f;
+      color: #fff;
+      min-width: 135px;
+      border-radius: 15px; }
+  .drink__card .price__block {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    .drink__card .price__block .price__pizza {
+      font-size: 20px;
+      font-weight: 700; }
+      .drink__card .price__block .price__pizza span {
+        font-weight: 700;
+        font-size: 14px; }
+    .drink__card .price__block .button__order__pizza {
+      background-color: #bf142e;
+      height: 50px;
+      border-radius: 15px;
+      padding: 10px 30px;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      color: #fff; }
+
+/*# sourceMappingURL=drink.css.map */

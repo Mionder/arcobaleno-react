@@ -1,0 +1,136 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto Condensed", sans-serif;
+  box-sizing: border-box; }
+
+.pizza__card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: 0.25s; }
+
+.pizza__card {
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 10px 0px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  border-radius: 25px;
+  transition: 0.25s; }
+  .pizza__card .image_pizza {
+    max-width: 400px;
+    position: relative; }
+    .pizza__card .image_pizza img {
+      width: 100%;
+      max-height: 200px;
+      border-radius: 25px;
+      padding: 0px 10px; }
+    .pizza__card .image_pizza .liked_pizza {
+      position: absolute;
+      right: 10px;
+      bottom: 160px;
+      margin-right: 10px; }
+    .pizza__card .image_pizza .weigth__pizza {
+      height: 22px;
+      width: 49px;
+      justify-content: center;
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-weight: 600;
+      background-color: rgba(0, 0, 0, 0.434);
+      font-size: 11px;
+      border-radius: 11px;
+      padding: 5px;
+      margin-right: 10px;
+      color: #fff;
+      letter-spacing: 0.05em; }
+      .pizza__card .image_pizza .weigth__pizza .size_pizza_label {
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+  .pizza__card .info__pizza {
+    padding: 0px 20px; }
+    .pizza__card .info__pizza .name__pizza {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: #222;
+      padding-top: 15px;
+      display: flex;
+      justify-content: flex-start; }
+    .pizza__card .info__pizza .components__pizza {
+      font-size: 14px;
+      color: #4f4f4f;
+      line-height: 146%;
+      font-weight: 300;
+      padding: 12px 0px; }
+    .pizza__card .info__pizza .size__pizza {
+      display: flex;
+      margin: auto;
+      border-radius: 15px;
+      flex-grow: 1;
+      background-color: #f8f8f8;
+      width: 345px;
+      border: 1px solid rgba(0, 0, 0, 0.08); }
+      .pizza__card .info__pizza .size__pizza .size__small,
+      .pizza__card .info__pizza .size__pizza .size__normal,
+      .pizza__card .info__pizza .size__pizza .size__big {
+        min-width: 115px;
+        font-size: 14px;
+        overflow: hidden;
+        height: 30px;
+        flex-grow: 0;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer; }
+      .pizza__card .info__pizza .size__pizza .active {
+        background-color: #4f4f4f;
+        color: #fff;
+        min-width: 125px;
+        border-radius: 15px; }
+    .pizza__card .info__pizza .price__block {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+      .pizza__card .info__pizza .price__block .price__pizza {
+        font-size: 20px;
+        font-weight: 700; }
+        .pizza__card .info__pizza .price__block .price__pizza span {
+          font-weight: 700;
+          font-size: 14px; }
+      .pizza__card .info__pizza .price__block .button__order__pizza {
+        background-color: #bf142e;
+        height: 50px;
+        border-radius: 15px;
+        padding: 10px 30px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: #fff; }
+
+.icon_like {
+  color: #181515; }
+
+@media screen and (max-width: 430px) {
+  .pizza__card {
+    width: 300px; }
+    .pizza__card .size__pizza {
+      display: flex;
+      flex-direction: column;
+      width: 250px; }
+      .pizza__card .size__pizza .size__small,
+      .pizza__card .size__pizza .size__normal,
+      .pizza__card .size__pizza .size__big {
+        border-bottom: 1px solid #e9e9e9;
+        border-radius: 15px; } }
