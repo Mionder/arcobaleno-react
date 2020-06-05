@@ -7,16 +7,23 @@ import {Link} from 'react-router-dom';
 import Glovo from '../Glovo/Glovo';
 import DeleteButton from "../DeleteButton/DeleteButton";
 import Input from "../Input/Input";
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Axios from "axios";
+import Validation from "../Validation/Validation";
 class Cart extends Component{
     state = {
         fullPrice: 0,
         userId: localStorage.getItem("id"),
         userBonus: 0,
-        payType: "",
+        payType: "cash",
+        user: {},
         bonusCart: 0,
         bonus: 0,
         value: "Київ",
+        validation: {
+            type: "warning",
+            message: ""
+        },
         isCartStyle: true,
         formControls: {
             username: {
@@ -77,14 +84,16 @@ class Cart extends Component{
     }
     handlePay = (event) => {
         this.setState({
-            handlePay: event.target.value
+            payType: event.target.value
         })
+        console.log(this.state.payType);
     }
     getCurrentUser = () => {
         const {userId} = this.state;
         Axios.get(`http://localhost:3000/users/${userId}`).then((res =>{
             this.setState({
-                userBonus: res.data.bonuses
+                userBonus: res.data.bonuses,
+                user: res.data
             })
             console.log(res.data);
         }))
@@ -187,7 +196,7 @@ class Cart extends Component{
             //     }) 
             // });
             return(
-                <div className="cart__wrapper">
+                <div className="cart__wrapper" key="id">
                         <div className="pizza__cart">
                             <div className="img__block">
                                 <img src={img} alt="no_pizza" className="pizza__photo"/>
@@ -209,29 +218,84 @@ class Cart extends Component{
         })
     }
 
-    setMyOrder = () =>{
-        const {setOrderData,pizza} =this.props;
-        const {formControls, addressControls,value} = this.state;
-        let pizzaName = ""
-        pizza.map(item =>{
-            const {name} = item;
-            pizzaName += name + "; ";
+    pullRequest = async() =>{
+        const idUser = localStorage.getItem("id");
+        const {user,bonus, bonusCart} = this.state;
+        user.bonuses = user.bonuses - bonusCart + this.props.myBonus;
+        console.log(user);
+            await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
+            console.log(res.data)
         })
-        let address = "місто " + value + " вул. " + addressControls.address.value + ","+ addressControls.house.value + " кв." + addressControls.flat.value + " під'їзд №: " + addressControls.driveway.value + " поверх: " + addressControls.floor.value;
-        setOrderData(address,pizzaName,2,formControls.username.value);
+    }
+
+    setMyOrder = async() =>{
+        const {setOrderData,pizza} =this.props;
+        const {formControls, addressControls,value, payType, bonusCart} = this.state;
+        let pizzaName = "";
+        const idUser = localStorage.getItem("id");
+        const {user} = this.state;
+        pizza.map(item =>{
+            const {name, amount} = item;
+            pizzaName += name + " - " + amount + " шт.; ";
+        })
+        if((payType === "cash")||(payType === "card")){
+            
+
+        this.pullRequest();
+            // console.log(this.state.user);
+            // user.bonuses = user.bonuses - bonusCart;
+            // await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
+            // console.log(res.data)
+            // })
+        }
+        const {address,house, flat, driveway, floor} = this.state.addressControls;
+        if((address.value === "")||(house.value==="")||(flat.value==="")||(driveway.value==="")||(floor.value==="")){
+            this.setState({
+                validation: {
+                    type: "error",
+                    message: "Введіть будь-ласка всі поля з інформацією доставки"
+                }
+            })
+        }
+        else if(formControls.username.value === ""){
+            this.setState({
+                validation: {
+                    type: "error",
+                    message: "Введіть будь-ласка ваше ім'я, або ім'я отримувача"
+                }
+            })
+        }
+        else if(pizzaName === ""){
+            this.setState({
+                validation: {
+                    type: "error",
+                    message: "Ви не обрали щодної піци"
+                }
+            })
+        }
+        else{
+            
+            let addressFull = "місто " + value + " вул. " + addressControls.address.value + ","+ addressControls.house.value + " кв." + addressControls.flat.value + " під'їзд №: " + addressControls.driveway.value + " поверх: " + addressControls.floor.value;
+            setOrderData(addressFull,pizzaName,2,formControls.username.value);
+            this.props.history.push("/payment");
+        }
     }
 
     render(){
         const {pizza} = this.props;
-        const {isCartStyle, formControls, addressControls, userBonus} = this.state;
+        const {isCartStyle, formControls, addressControls, userBonus, validation} = this.state;
         const items = this.renderCart(pizza);
         const fullCost = this.priceCounting(pizza);
-        console.log(pizza);
         return(
             <div className="full__cart">         
                 <div className="order__list">
                     <p className="order__label">Ваше замовлення:</p>
-                    {items}
+                    <div className="pizza__check">
+                        {items.length == 0 ? <div className="smile_block">
+                    <SentimentVeryDissatisfiedIcon className="sad__smile"/> 
+                    <p className="smile_label">Ви ще не додали жодної піци до корзини</p>
+                    </div> : items}
+                    </div>
                     <div className="order__full__price">
                         <p className="full__price">До сплати: {fullCost.toFixed(2)} грн.</p>      
                         <p className="full__price">Бонусів: {(fullCost.toFixed(2)*0.05).toFixed(2)}</p> 
@@ -275,17 +339,17 @@ class Cart extends Component{
                         <div className="payment">
                             <p className="main__label__cart">Оплата</p>
                             <div className="edits__payment">
-                                <select name="" id="" className="edit">
-                                    <option value="" selected disabled>Оберіть купон</option>
+                                <select name="" id="" defaultValue="Оберіть купон" className="edit">
+                                    {/* <option value="" disabled>Оберіть купон</option> */}
                                     <option value="">-25% на другу піцу</option>
                                     <option value="">Разом дешевше</option>
                                 </select>
 
-                                <select name="" id="" className="edit">
-                                    <option value="" selected disabled>Оберіть спосіб оплати</option>
-                                    <option value="">Готівка</option>
-                                    <option value="">Картою кур'єру</option>
-                                    <option value="">LiqPay</option>
+                                <select name="" id="" value={this.state.payType} onChange={this.handlePay} defaultValue="Оберіть спосіб оплати" className="edit">
+                                    {/* <option value=""  disabled>Оберіть спосіб оплати</option> */}
+                                    <option value="cash">Готівка</option>
+                                    <option value="card">Картою кур'єру</option>
+                                    <option value="liqpay">LiqPay</option>
                                 </select>
                             </div>
                         </div>
@@ -319,14 +383,14 @@ class Cart extends Component{
                         <div className="payment">
                             <p className="main__label__cart">Оплата</p>
                             <div className="edits__payment">
-                                <select name="" id="" className="edit" value={this.state.payType} onChange={this.handlePay}>
-                                    <option value="" selected disabled>Оберіть купон</option>
+                                <select name="" id="" defaultValue="Оберіть купон" className="edit" >
+                                    {/* <option value=""  disabled>Оберіть купон</option> */}
                                     <option value="">-25% на другу піцу</option>
                                     <option value="">Разом дешевше</option>
                                 </select>
 
-                                <select name="" id="" className="edit">
-                                    <option value="" selected disabled>Оберіть спосіб оплати</option>
+                                <select name="" id="" defaultValue="Оберіть спосіб оплати" className="edit" value={this.state.payType} onChange={this.handlePay}>
+                                    <option value=""  disabled>Оберіть спосіб оплати</option>
                                     <option value="cash">Готівка</option>
                                     <option value="card">Картою кур'єру</option>
                                     <option value="liqpay">LiqPay</option>
@@ -336,13 +400,16 @@ class Cart extends Component{
 
                     </div>
                     <div className="bonus_payment">
-                        <Link to='/payment'><button className="payment__btn" onClick={this.setMyOrder()}>Замовити</button></Link>
+                        <button className="payment__btn" onClick={this.setMyOrder}>Замовити</button>
                         <div className="right-panel__cart">
                             <p className="full__price">До сплати: {fullCost.toFixed(2) - this.state.bonusCart} грн.</p>
                             <p className="full__price">Бонусів для списання: <input className="bonus__input" value={this.state.bonusCart} onChange={this.handleBonus} placeholder={userBonus} type="number" min="0" max={userBonus}/></p> 
                         </div>
                              
                     </div>
+                            <div className="validation__problems">
+                                {validation.message !== "" && <Validation type={validation.type} message={validation.message}/>}
+                            </div>
                     </div>
                 </div> 
             </div>
