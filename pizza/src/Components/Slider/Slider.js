@@ -1,13 +1,15 @@
 import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+import {maxPrice} from "../../actions/actionCreater";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     root: {
       width: 300 + theme.spacing(3) * 2,
     },
     margin: {
-      height: theme.spacing(3),
+      // height: theme.spacing(3),
     },
   }));
 
@@ -42,12 +44,22 @@ const useStyles = makeStyles(theme => ({
     },
   })(Slider);
 
-export default function CustomizedSlider(props) {
+function CustomizedSlider(props) {
+  const [priceValue, setPrice] = React.useState(290);
+  const {maxPrice} = props;
+  const handlePrice = (event, value) => {
+    setPrice(value);
+    maxPrice(value);
+  }
     const classes = useStyles();
   return(
       <div>
-        <PrettoSlider valueLabelDisplay="auto" min={50} max={250} aria-label="pretto slider" defaultValue={250} />
+        <PrettoSlider valueLabelDisplay="auto" value={priceValue} onChange={handlePrice} min={87} max={290} aria-label="pretto slider" defaultValue={290} />
         <div className={classes.margin} />
       </div>
   )
 }
+
+export default connect(state =>({
+  maxPrice: state.maxPrice,
+}),{maxPrice})(CustomizedSlider)

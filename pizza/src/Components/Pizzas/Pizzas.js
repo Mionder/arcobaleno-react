@@ -4,17 +4,19 @@ import Pizza from '../Pizza/Pizza';
 import "./pizzas.css";
 import Preloader from '../Preloader/Preloaders';
 import {connect} from 'react-redux';
-import {filterPizza, setComponents} from '../../actions/actionCreater';
+import {filterPizza, setComponents, maxPrice} from '../../actions/actionCreater';
 import Checkbox from '../Checkbox/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Slider from "../Slider/Slider";
+
 class Pizzas extends Component{
     
     state = {
         pizzas: [],
         error: false,
         isReady: false,
-        value: undefined,
+        value: "",
         isShowFilter: false
     }
 
@@ -72,39 +74,8 @@ class Pizzas extends Component{
        return arr.map(item =>{
             const {name,components,id,img, sizeAndPrice, _id} = item;
             const {value} = this.state;
-            const {myComponents} = this.props;
-            if((value === undefined)&&(myComponents === [])){
-                // console.log(myComponents);
-                // console.log(components);
-            return(
-                <div className="container" key={id}>  
-                        <Pizza
-                        name = {name}
-                        components = {components}
-                        src = {img}
-                        id = {id}
-                        sizeAndPrice = {sizeAndPrice}
-                        />
-                    
-                </div>
-            )
-            }                
-            else if((name.toLowerCase().includes(value))&&(value!==undefined)){
-                    return(
-                        <div className="container" key ={id}>   
-                        <Pizza 
-                        name = {name}
-                        components = {components}
-                        src = {img}
-                        id = {id}
-                        sizeAndPrice = {sizeAndPrice}
-                        />                   
-                        </div>
-                    )
-                }
-            else {
-            
-            if((components.includes(myComponents))&&(value === undefined)){
+            const {myComponents, maxPriceValue} = this.props;
+            if((maxPriceValue === 290)&&(value === "")){
                 return(
                     <div className="container" key={id}>  
                             <Pizza
@@ -112,14 +83,43 @@ class Pizzas extends Component{
                             components = {components}
                             src = {img}
                             id = {id}
-                            _id = {_id}
                             sizeAndPrice = {sizeAndPrice}
                             />
                         
                     </div>
                 )
             }
-        }
+            else{
+                if((maxPriceValue > sizeAndPrice[0].price)&&(value === "")){
+                    return(
+                        <div className="container" key={id}>  
+                                <Pizza
+                                name = {name}
+                                components = {components}
+                                src = {img}
+                                id = {id}
+                                sizeAndPrice = {sizeAndPrice}
+                                />
+                            
+                        </div>
+                    )
+                }
+            }
+            if((value !== "")&&(name.toLowerCase().includes(value))){
+                return(
+                    <div className="container" key={id}>  
+                            <Pizza
+                            name = {name}
+                            components = {components}
+                            src = {img}
+                            id = {id}
+                            sizeAndPrice = {sizeAndPrice}
+                            />
+                        
+                    </div>
+                )
+            }
+
         })
     }
     render(){
@@ -143,7 +143,7 @@ class Pizzas extends Component{
                     <div className="search_and_filter">
 
                     
-                    <p className="find_pizza_label">Знайди піцу за компонентами</p>
+                    {/* <p className="find_pizza_label">Знайди піцу за компонентами</p>
                     <div className="checkbox__wrapper">
                     <div className="checkboxed">           
                         <Checkbox 
@@ -172,7 +172,7 @@ class Pizzas extends Component{
                         />
                         <Checkbox 
                         label={"Бекон"}
-                        /></div></div>
+                        /></div></div> */}
                     <div className="checking_panel">
                         
                         <div className="wrapper_checking">
@@ -181,6 +181,11 @@ class Pizzas extends Component{
                         <p className="find_pizza_label">Знайди піцу за назвою</p>
                         <input type="text" className="search__input" value={this.state.value} onChange={this.handleChange}/>
                     </div></div></div>
+                        <div className="price__filtration">
+                            <p className="find_pizza_label">Фільтрація за ціною</p>
+                            <Slider />
+                        </div>
+                    
                     </div>}
                     {/* <FilterPanel /> */}
                     {/* <select value={this.state.value} onChange={this.handleChange}>
@@ -200,5 +205,6 @@ class Pizzas extends Component{
 }
 export default connect(state =>({
     newPizza: state.newPizza,
-    myComponents: state.components
-}),{filterPizza, setComponents})(Pizzas);
+    myComponents: state.components,
+    maxPriceValue: state.maxPrice
+}),{filterPizza, setComponents, maxPrice})(Pizzas);

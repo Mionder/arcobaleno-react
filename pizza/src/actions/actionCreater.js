@@ -82,3 +82,8 @@ export const setOrderData = (address, pizzaName, amount, name) => ({
     amount,
     name
 })
+
+export const maxPrice = (price) => ({
+    type: "MAX_PRICE",
+    price
+})

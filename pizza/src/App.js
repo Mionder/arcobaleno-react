@@ -11,7 +11,6 @@ import Footer from './Components/Footer/Footer';
 import SingleSale from './Components/SingleSale/SingleSale';
 import Payment from './Components/Payment/Payment';
 import Profile from './Components/Profile/Profile';
-import Adaptive from './Components/Adaptive/Adaptive';
 import ScrollToTop from 'react-router-scroll-top'
 import WhereToBuy from './Components/WhereToBuy/WhereToBuy';
 function App() {

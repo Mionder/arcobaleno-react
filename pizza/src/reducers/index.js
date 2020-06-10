@@ -7,6 +7,8 @@ import components from './components';
 import price from './price';
 import bonus from './bonus';
 import order from './orderData';
+import maxPrice from "./maxPrice";
+
 export default combineReducers({
     pizza,
     user,
@@ -15,6 +17,7 @@ export default combineReducers({
     components,
     price,
     bonus,
-    order
+    order,
+    maxPrice
 });
 

@@ -8,7 +8,7 @@
   margin: auto; }
 
 .best__pizza__block {
-  background-color: #f8f8f8;padding: 15px 0px; }
+  background-color: #f8f8f8; }
   .best__pizza__block .pizza__best {
     text-align: center;
     padding: 20px;
@@ -63,4 +63,9 @@
 .inputs_search {
   display: flex;
   justify-content: space-around;
+  align-items: center; }
+
+.price__filtration {
+  display: flex;
+  justify-content: center;
   align-items: center; }

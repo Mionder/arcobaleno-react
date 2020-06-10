@@ -16,7 +16,7 @@ class Header extends Component {
                     <nav>
                         <ul className="nav__bar">
                             <Link to="/"><li className="logo">
-                                Dominos's Pizza
+                                Arcobaleno's Pizza
                             </li></Link>
                             {/* <Link id="menu-togle" className="menu__navig" to="/cart"><div  ></div></Link> */}
 

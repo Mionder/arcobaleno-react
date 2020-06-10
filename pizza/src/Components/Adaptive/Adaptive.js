@@ -16,14 +16,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
 import './style.css';
 import {Link} from 'react-router-dom';
 import '../Header/header.css';
-// import cart from '../Header/img/supermarket.png';
-// import {connect} from 'react-redux';
-// import {setUser} from '../../actions/actionCreater';
-// import CartIcon from "../CartIcon/CartIcon";
+import {connect} from 'react-redux';
+import {setUser} from '../../actions/actionCreater';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
@@ -88,14 +85,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight(props) {
+function PersistentDrawerRight(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   // const {user, amount} = props;
+  const {user} = props;
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+  const current = () => {
+    if(props.user === ""){
+      return "Авторизація"
+    }
+    else return `Привіт, ${props.user}`
+  }
+
+  const currentLink = () => {
+    const id = localStorage.getItem("id")
+    if(props.user === ""){
+      return "/login"
+    }
+    else return `/profile${id}`
+  }
 
   const handleDrawerClose = () => {
     setOpen(false); 
@@ -103,22 +115,6 @@ export default function PersistentDrawerRight(props) {
 
   return (
     <div className={classes.root}>
-      {/* <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap className={classes.title}>
-            <Link to="/"><li className="logo">
-                    Dominos's Pizza
-                </li></Link>
-          </Typography>
-          
-        </Toolbar>
-      </AppBar> */}
         <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -145,7 +141,7 @@ export default function PersistentDrawerRight(props) {
         </div>
         <Divider />
         <List>
-          {[{text:'Акції', link:"/sales"}, {text:'Піца', link:"/pizzas"}, {text:'Напої', link:"/drinks"}, {text:'Авторизація', link:"/login"}, {text:'Корзина', link:"/cart"}].map((item, index) => (
+          {[{text:'Акції', link:"/sales"}, {text:'Піца', link:"/pizzas"}, {text:'Напої', link:"/drinks"}, {text: current(), link: currentLink()}, {text:'Корзина', link:"/cart"}].map((item, index) => (
             <ListItem button key={item.text}>
               <ListItemIcon>{index === 0 ? <AttachMoneyIcon /> : index === 1 ? <LocalPizzaIcon /> : index === 2 ? <LocalDrinkIcon /> : index ===3 ? <PersonIcon /> : index===4 ? <ShoppingCartIcon /> : <InboxIcon />}</ListItemIcon>
               <Link className="links_adaptive" to={item.link}><ListItemText primary={item.text} /></Link>
@@ -159,3 +155,6 @@ export default function PersistentDrawerRight(props) {
   );
 }
 
+export default connect(state => ({
+  user: state.user
+}),{setUser})(PersistentDrawerRight)
