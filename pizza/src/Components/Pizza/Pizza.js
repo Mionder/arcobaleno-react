@@ -10,6 +10,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Axios from 'axios';
+import Validation from "../Validation/Validation";
 
 class Pizza extends Component{
     state = {
@@ -23,6 +24,11 @@ class Pizza extends Component{
             big: false
         },
         user: {
+        },
+        validation: {
+            message: "",
+            isValid: false,
+            type: ""
         },
         isMatches: false
     }
@@ -77,9 +83,24 @@ class Pizza extends Component{
         
     }
 
-    handleAddPizza = () =>{
+    handleAddPizza = async () =>{
         const {addPizza, id, name, components,src, isAmount, amount} = this.props;
-        addPizza(id, name, this.state.currentSize.price ,components,src,1,this.state.currentSize.size);
+        const pizzaArr = this.props.pizza;
+        await this.setState({validation: {isValid: false}})
+        await pizzaArr.forEach(item =>{
+            if((id === item.id)&&(this.state.currentSize.size === item.sizeAndPrice)){
+                this.setState({
+                    validation : {
+                        isValid: true,
+                        message: "Ви вже замовили дану піцу",
+                        type: "error"
+                    }
+                })
+            }
+        }) 
+        if(!this.state.validation.isValid){
+            addPizza(id, name, this.state.currentSize.price ,components,src,1,this.state.currentSize.size);
+        }
         if(amount){
             isAmount(!amount);
         }
@@ -139,6 +160,8 @@ class Pizza extends Component{
     render(){
         const {name,components,src, sizeAndPrice, amount, id} = this.props;
         const {currentSize, currentStyle} = this.state;
+        const {isValid, message, type} = this.state.validation;
+
         return(
             <div className="pizza__full">
                 <div className="pizza__card">
@@ -167,6 +190,10 @@ class Pizza extends Component{
                                 В кошик
                             </div>
                         </div>
+                        {isValid && 
+                        <div className="validation__block__pizza">
+                            <Validation type={type} message={message} />
+                        </div>}
                     </div>
                 </div>
             </div>

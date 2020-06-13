@@ -8,6 +8,9 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   transition: 0.25s; }
 
+.validation__block__pizza {
+  margin: 20px 0px; }
+
 .pizza__card {
   margin-top: 5px;
   margin-left: 10px;
@@ -133,4 +136,5 @@
       .pizza__card .size__pizza .size__normal,
       .pizza__card .size__pizza .size__big {
         border-bottom: 1px solid #e9e9e9;
-        border-radius: 15px; } }
+        border-radius: 15px;
+        min-width: 100px; } }

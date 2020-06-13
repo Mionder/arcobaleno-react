@@ -188,7 +188,7 @@ class Cart extends Component{
 
     renderCart(arr){
         return arr.map(item =>{
-            const {name,price,components, img, amount, id, size} = item;
+            const {name,price,components, img, amount, id, sizeAndPrice} = item;
             const {addAmount, subAmount, deletePizza, isAmount} = this.props;
             // arr.forEach(element => {
             //     this.setState({
@@ -198,18 +198,24 @@ class Cart extends Component{
             return(
                 <div className="cart__wrapper" key="id">
                         <div className="pizza__cart">
-                            <div className="img__block">
-                                <img src={img} alt="no_pizza" className="pizza__photo"/>
-                            </div>
+                            <div className="img__and__name">
+                                <div className="img__block">
+                                    <img src={img} alt="no_pizza" className="pizza__photo"/>
+                                    <div className="pizza__weight">{sizeAndPrice} г</div>
+                                </div>
                                 <p className="cart__label name_cart">{name}</p>
+                            </div>
                                 <p className="cart__label price_cart">{price} грн.</p>
                             <p className="cart__label components_cart">{components}</p> 
+                            <div className="manipulation_section">
+                            <p className="media__price">{price} грн.</p>
                                 <div className="change__amount">
                                     <div className="minus__cart" onClick={() => subAmount(amount,id, price)}>-</div>
                                     <p className="amount">{amount}</p>
                                     <div className="plus__cart" onClick={() => addAmount(amount, id, price)}>+</div>
                                 </div>
-                            <div className="delete__cart" onClick={() => deletePizza(id, price)}><DeleteButton /></div>
+                                <div className="delete__cart" onClick={() => deletePizza(id, price)}><DeleteButton /></div>
+                            </div>
                     </div>
                     
                     

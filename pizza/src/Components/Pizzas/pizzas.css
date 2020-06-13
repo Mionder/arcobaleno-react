@@ -69,3 +69,12 @@
   display: flex;
   justify-content: center;
   align-items: center; }
+
+@media screen and (max-width: 600px) {
+  .price__filtration {
+    display: flex;
+    flex-direction: column; }
+
+  .checking_panel {
+    display: flex;
+    flex-direction: column; } }

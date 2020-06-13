@@ -17,7 +17,9 @@ class Profile extends Component{
     state={
         users: [],
         isActive: false,
-        pizza: []
+        pizza: [],
+        nextBonus: localStorage.getItem("timeBonus"),
+        curUser: {}
     }
     getUser = async () =>{
         await Axios.get(`http://localhost:3000/users/`).then((res)=>{
@@ -30,8 +32,11 @@ class Profile extends Component{
     }
       componentDidMount(){
          this.getUser();
-        // //  const {users} = this.state;
-        //  this.searchUser(users);
+        //  const {users, nextBonus} = this.state;
+        // //  this.searchUser(users);
+        // let date = new Date();
+        // console.log(nextBonus!==date.getDate() , users.username, localStorage.getItem("username"));
+        // if((nextBonus !== date.getDate())&&(users.username === localStorage.getItem("username"))){
         $(document).ready(function () {
             for (let i = 0; i < 3; i++) {
                 $(".list li").clone().appendTo(".list");
@@ -58,7 +63,7 @@ class Profile extends Component{
                 
             });
         });
-
+        // }
     }
 
     likedPizza = (arr) =>{
@@ -128,12 +133,22 @@ class Profile extends Component{
 
     rouletteFunc = () => {
         const idUser = localStorage.getItem("id");
+        const {users, nextBonus} = this.state;
+        let date = new Date();
+        console.log(nextBonus!==date.getDate() , users.username, localStorage.getItem("username"));
+        if((nextBonus !== date.getDate())&&(users.username === localStorage.getItem("username"))){
         const rouletteBonus = localStorage.getItem("value");
                 const {users} = this.state;
                 users.bonuses += parseInt(rouletteBonus);
                 Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(users))).then((res)=>{
                 console.log(res.data)
         })
+        
+        let date = new Date();
+        const currentDate = date.getDate();
+        localStorage.setItem("timeBonus", currentDate)
+        }
+        else alert("auf");
     }
 
     logOut = () =>{
