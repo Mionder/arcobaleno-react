@@ -214,7 +214,7 @@ class Login extends Component{
                             message: "Ви успішно зареєструвалися"
                         }
                     })
-                    this.props.history.push('/');
+                    this.props.history.push('/profile'+formControls.username.value);
                 });
             }
             else(console.log("ERROORORORORORO"));

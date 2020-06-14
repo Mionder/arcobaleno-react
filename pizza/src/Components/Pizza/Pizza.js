@@ -149,10 +149,10 @@ class Pizza extends Component{
         
     }
 
-    pullRequest = () => {
+    pullRequest = async () => {
         const idUser = localStorage.getItem("id");
         const {user} = this.state;
-        Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
+        await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
             console.log(res.data)
         })
     }

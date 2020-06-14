@@ -69,6 +69,7 @@ class Profile extends Component{
     likedPizza = (arr) =>{
         let myPizza = [];
         arr.map(item =>{
+            console.log(item);
             Axios.get(`http://localhost:3000/pizzas/${item}`).then((res)=>{
                 myPizza.push(res.data);
                 this.setState({pizza: myPizza});
@@ -80,6 +81,7 @@ class Profile extends Component{
     renderPizza = (arr) =>{
         return arr.map(item =>{
             const {name,components,id,img, sizeAndPrice, _id} = item;
+            console.log(item);
             return(
                     <div className="container" key={id}>  
                             <Pizza

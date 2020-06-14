@@ -84,6 +84,7 @@ class Pizzas extends Component{
                             src = {img}
                             id = {id}
                             sizeAndPrice = {sizeAndPrice}
+                            _id={_id}
                             />
                         
                     </div>
@@ -99,6 +100,7 @@ class Pizzas extends Component{
                                 src = {img}
                                 id = {id}
                                 sizeAndPrice = {sizeAndPrice}
+                                _id={_id}
                                 />
                             
                         </div>
@@ -114,6 +116,7 @@ class Pizzas extends Component{
                             src = {img}
                             id = {id}
                             sizeAndPrice = {sizeAndPrice}
+                            _id={_id}
                             />
                         
                     </div>

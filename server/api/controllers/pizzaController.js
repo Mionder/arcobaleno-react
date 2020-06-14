@@ -12,8 +12,8 @@ var mongoose = require('mongoose'),
 exports.list_all_tasks = function(req, res) {
     Pizza.find({}, function(err, task) {
     if (err)
-      res.send(err);
-    res.json(task);
+    return res.send(err);
+       return res.json(task);
   });
 };
 
