@@ -59,7 +59,13 @@ const pizzas = (state =[], {type,id,name,price,components,img,amount,size, sizeA
                 return item;
             });
         case 'DELETE_PIZZA' :
-            return [...state].filter(pizza => pizza.id !== id);
+            return [...state].filter((pizza) =>  {
+                if((pizza.id === id) && (pizza.price === price)){
+                    console.log("1");
+                }
+                else return pizza
+                
+            })
         case 'FILTER_PIZZA' :
             return [...state].sort();
         default: 

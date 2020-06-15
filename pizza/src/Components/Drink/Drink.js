@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './drink.css';
 import {connect} from 'react-redux';
-import {addPizza} from '../../actions/actionCreater';
+import {addPizza, isAmount} from '../../actions/actionCreater';
+import Validation from "../Validation/Validation";
 
 class Drink extends Component{
     state = {
@@ -12,12 +13,36 @@ class Drink extends Component{
         currentStyle: {
             small: true,
             normal: false,
+        },
+        validation: {
+            isValid: false,
+            typeVal: "",
+            message: "",
         }
     }
 
-    handleAddDrink = () =>{
-        const {addPizza, id, name,img} = this.props;
-        addPizza(id, name, this.state.currentSize.price ,"",img,1);
+    handleAddDrink = async () =>{
+        const {addPizza, id, name,img, amount, isAmount} = this.props;
+        const drinkArr = this.props.pizza;
+        await this.setState({validation: {isValid: false}})
+        await drinkArr.forEach(item =>{
+            if((id === item.id)&&(this.state.currentSize.size === item.sizeAndPrice)){
+                this.setState({
+                    validation : {
+                        isValid: true,
+                        message: "Ви вже замовили даний напій",
+                        typeVal: "error"
+                    }
+                })
+            }
+        })
+        if(!this.state.validation.isValid){
+            addPizza(id, name, this.state.currentSize.price ,"",img,1,this.state.currentSize.size);
+        }
+        if(amount){
+            isAmount(!amount);
+        }
+        // addPizza(id, name, this.state.currentSize.price ,"",img,1);
     }
 
     handleChangleSize = (newSize, activeSize) => {
@@ -53,6 +78,8 @@ class Drink extends Component{
     render(){
         const {name, type,img, sizeAndPrice} = this.props;
         const {currentSize, currentStyle} = this.state;
+        const {isValid, message, typeVal} = this.state.validation;
+
         return(
             <div className="drink__full">
                 <div className="drink__card">
@@ -69,6 +96,11 @@ class Drink extends Component{
                                     В кошик
                                 </div>
                             </div>
+                            {isValid && 
+                                <div className="validation__block__pizza">
+                                    <Validation type={type} message={message} />
+                                </div>
+                            }
                     </div>
                 </div>
             </div>
@@ -76,5 +108,6 @@ class Drink extends Component{
     }
 }
 export default connect(state=>({
-    pizza: state.pizza
-}),{addPizza})(Drink);
+    pizza: state.pizza,
+    amount: state.amount
+}),{addPizza, isAmount})(Drink);

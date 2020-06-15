@@ -75,7 +75,7 @@ class Pizzas extends Component{
             const {name,components,id,img, sizeAndPrice, _id} = item;
             const {value} = this.state;
             const {myComponents, maxPriceValue} = this.props;
-            if((maxPriceValue === 290)&&(value === "")){
+            if(value === "" && maxPriceValue === 290){
                 return(
                     <div className="container" key={id}>  
                             <Pizza
@@ -90,38 +90,121 @@ class Pizzas extends Component{
                     </div>
                 )
             }
-            else{
-                if((maxPriceValue > sizeAndPrice[0].price)&&(value === "")){
-                    return(
+            if(maxPriceValue > sizeAndPrice[0].price && value === ""){
+                return(
                         <div className="container" key={id}>  
-                                <Pizza
-                                name = {name}
-                                components = {components}
-                                src = {img}
-                                id = {id}
-                                sizeAndPrice = {sizeAndPrice}
-                                _id={_id}
-                                />
-                            
-                        </div>
-                    )
-                }
+                                        <Pizza
+                                        name = {name}
+                                        components = {components}
+                                        src = {img}
+                                        id = {id}
+                                        sizeAndPrice = {sizeAndPrice}
+                                        _id={_id}
+                                        />
+                                    
+                                </div>
+                            )
             }
-            if((value !== "")&&(name.toLowerCase().includes(value))){
+            if(maxPriceValue > sizeAndPrice[0].price && name.toLowerCase().includes(value)){
                 return(
                     <div className="container" key={id}>  
-                            <Pizza
-                            name = {name}
-                            components = {components}
-                            src = {img}
-                            id = {id}
-                            sizeAndPrice = {sizeAndPrice}
-                            _id={_id}
-                            />
-                        
+                        <Pizza
+                        name = {name}
+                        components = {components}
+                        src = {img}
+                        id = {id}
+                        sizeAndPrice = {sizeAndPrice}
+                        _id={_id}
+                        />
+                    
                     </div>
                 )
             }
+            // else{
+            //     if(value === ""){
+            //         if((maxPriceValue > sizeAndPrice[0].price)){
+            //             return(
+            //                 <div className="container" key={id}>  
+            //                         <Pizza
+            //                         name = {name}
+            //                         components = {components}
+            //                         src = {img}
+            //                         id = {id}
+            //                         sizeAndPrice = {sizeAndPrice}
+            //                         _id={_id}
+            //                         />
+                                
+            //                 </div>
+            //             )  
+            //         }
+            //     }
+            //     if(value !== ""){
+            //         if((maxPriceValue > sizeAndPrice[0].price)&&(name.toLowerCase().includes(value))){
+            //             return(
+            //                 <div className="container" key={id}>  
+            //                         <Pizza
+            //                         name = {name}
+            //                         components = {components}
+            //                         src = {img}
+            //                         id = {id}
+            //                         sizeAndPrice = {sizeAndPrice}
+            //                         _id={_id}
+            //                         />
+                                
+            //                 </div>
+            //             )
+            //         }
+            //     }
+            //     // if((maxPriceValue > sizeAndPrice[0].price)&&(value === "")){
+            //     //     return(
+            //     //         <div className="container" key={id}>  
+            //     //                 <Pizza
+            //     //                 name = {name}
+            //     //                 components = {components}
+            //     //                 src = {img}
+            //     //                 id = {id}
+            //     //                 sizeAndPrice = {sizeAndPrice}
+            //     //                 _id={_id}
+            //     //                 />
+                            
+            //     //         </div>
+            //     //     )
+            //     // }
+            //     // else {
+            //     //     if((maxPriceValue > sizeAndPrice[0].price)&&(value !== "")&&(name.toLowerCase().includes(value))){
+            //     //         return(
+            //     //             <div className="container" key={id}>  
+            //     //                     <Pizza
+            //     //                     name = {name}
+            //     //                     components = {components}
+            //     //                     src = {img}
+            //     //                     id = {id}
+            //     //                     sizeAndPrice = {sizeAndPrice}
+            //     //                     _id={_id}
+            //     //                     />
+                                
+            //     //             </div>
+            //     //         )
+            //     //     }
+            //     // }
+                
+            // }
+
+            // if((value !== "")&&(name.toLowerCase().includes(value))){
+            //     return(
+            //         <div className="container" key={id}>  
+            //                 <Pizza
+            //                 name = {name}
+            //                 components = {components}
+            //                 src = {img}
+            //                 id = {id}
+            //                 sizeAndPrice = {sizeAndPrice}
+            //                 _id={_id}
+            //                 />
+                        
+            //         </div>
+            //     )
+            // }
 
         })
     }

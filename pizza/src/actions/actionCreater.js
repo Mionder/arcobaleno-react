@@ -87,3 +87,8 @@ export const maxPrice = (price) => ({
     type: "MAX_PRICE",
     price
 })
+
+export const paymentType = (typePay) => ({
+    type: "PAYMENT_TYPE",
+    typePay
+})

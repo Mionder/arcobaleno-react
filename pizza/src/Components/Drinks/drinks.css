@@ -17,4 +17,5 @@
   .best__pizza__block .pizza__full__block {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap; }
+    flex-wrap: wrap;
+    margin: 15px 0px; }

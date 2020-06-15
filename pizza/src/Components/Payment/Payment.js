@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as CryptoJS from 'crypto-js';
-import {setFullPrice, setOrderData} from "../../actions/actionCreater";
+import {setFullPrice, setOrderData, paymentType} from "../../actions/actionCreater";
 import {connect} from 'react-redux';
 import MoodIcon from '@material-ui/icons/Mood';
 import "./payment.css";
@@ -41,9 +41,11 @@ class Payment extends Component{
     }
     
     render(){
+        const {payType} = this.props;
+        // const payType = localStorage.getItem("payType");
         return(
             <div>
-                <form method="POST" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+                <form method="POST" onClick={this.telegram()} accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
                     <input type="hidden" name="data" value={this.paymentLiqPayData()} />
                     <input type="hidden" name="signature" value={this.paymentLiqPaySignature()} />
                     <div className="payment_container">
@@ -51,10 +53,10 @@ class Payment extends Component{
                         <div className="payment__text">
                             <span className="payment_label">Ваше замовлення додане в чергу. Оплатіть будь-ласка в обраний вами спосіб</span>
                         </div>
-                    <button className="payForLiqPay">
+                    {payType === "liqpay" &&<button className="payForLiqPay">
                         <img name="btn_text"/>
-                        <p onClick={this.telegram()}>Оплатити</p>
-                    </button>
+                        <p >Оплатити</p>
+                    </button>}
                     {/* <button onClick={this.telegram()}>Телега</button> */}
                     </div>
                 </form>
@@ -66,5 +68,6 @@ class Payment extends Component{
 export default connect(state=>({
     myPrice: state.price,
     pizza: state.pizza,
-    order: state.order
-}),{setFullPrice,setOrderData})(Payment)
+    order: state.order,
+    payType: state.payType
+}),{setFullPrice,setOrderData, paymentType})(Payment)

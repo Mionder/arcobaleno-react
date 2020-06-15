@@ -8,6 +8,7 @@ import price from './price';
 import bonus from './bonus';
 import order from './orderData';
 import maxPrice from "./maxPrice";
+import payType from "./paymentType";
 
 export default combineReducers({
     pizza,
@@ -18,6 +19,7 @@ export default combineReducers({
     price,
     bonus,
     order,
-    maxPrice
+    maxPrice,
+    payType
 });
 

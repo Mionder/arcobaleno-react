@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Drink from '../Drink/Drink';
 import PreloaderDrink from "../PreloaderDrink/PreloaderDrink";
-
+import "./drinks.css";
 export default class Drinks extends Component{
     state = {
         drink: [],

@@ -33,8 +33,8 @@ exports.create_a_task = function(req, res) {
 exports.read_a_task = function(req, res) {
     Pizza.findById(req.params.pizzaId, function(err, task) {
     if (err)
-      res.send(err);
-    res.json(task);
+    return  res.send(err);
+    return res.json(task);
   });
 };
 
@@ -172,8 +172,8 @@ exports.delete_a_sale = function(req, res) {
 exports.list_all_users = function(req, res) {
   User.find({}, function(err, task) {
   if (err)
-    res.send(err);
-  res.json(task);
+  return  res.send(err);
+  return res.json(task);
 });
 };
 
@@ -193,8 +193,8 @@ new_task.save(function(err, task) {
 exports.read_a_user = function(req, res) {
   User.findById(req.params.userId, function(err, task) {
   if (err)
-    res.send(err);
-  res.json(task);
+  return  res.send(err);
+  return res.json(task);
 });
 };
 

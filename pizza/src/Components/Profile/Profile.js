@@ -133,7 +133,7 @@ class Profile extends Component{
     //     console.log(this.state.likedPizza);
     // }
 
-    rouletteFunc = () => {
+    rouletteFunc = async () => {
         const idUser = localStorage.getItem("id");
         const {users, nextBonus} = this.state;
         let date = new Date();
@@ -142,9 +142,11 @@ class Profile extends Component{
         const rouletteBonus = localStorage.getItem("value");
                 const {users} = this.state;
                 users.bonuses += parseInt(rouletteBonus);
-                Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(users))).then((res)=>{
+               await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(users))).then((res)=>{
                 console.log(res.data)
         })
+        // setTimeout(this.props.history.push("/"), 10000);
+        // this.props.history.push("/");
         
         let date = new Date();
         const currentDate = date.getDate();

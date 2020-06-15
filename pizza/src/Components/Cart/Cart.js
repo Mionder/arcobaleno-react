@@ -2,7 +2,7 @@ import React from 'react';
 import './cart.css';
 import { Component } from 'react';
 import {connect} from 'react-redux';
-import {addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData} from '../../actions/actionCreater';
+import {addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData, paymentType} from '../../actions/actionCreater';
 import {Link} from 'react-router-dom';
 import Glovo from '../Glovo/Glovo';
 import DeleteButton from "../DeleteButton/DeleteButton";
@@ -77,16 +77,21 @@ class Cart extends Component{
         this.handlePay = this.handlePay.bind(this);
         this.getCurrentUser();
     }
-    handleBonus = (event) =>{
-        this.setState({
+    handleBonus = async (event) =>{
+        const {userBonus} = this.state;
+        if(event.target.value <= userBonus){
+            await this.setState({
             bonusCart: event.target.value
         })
+        }
     }
-    handlePay = (event) => {
-        this.setState({
+    handlePay = async (event) => {
+        await this.setState({
             payType: event.target.value
         })
-        console.log(this.state.payType);
+        const {paymentType} = this.props;
+        paymentType(this.state.payType);
+        localStorage.setItem("payType", this.state.payType);
     }
     getCurrentUser = () => {
         const {userId} = this.state;
@@ -425,5 +430,6 @@ class Cart extends Component{
 export default connect(state=>({
     pizza: state.pizza,
     myPrice: state.price,
-    myBonus: state.bonus
-}),{addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData})(Cart);
+    myBonus: state.bonus,
+    payTypeValue: state.paymentType
+}),{addAmount, subAmount, deletePizza, isAmount, setFullPrice, setBonus, setOrderData, paymentType})(Cart);
