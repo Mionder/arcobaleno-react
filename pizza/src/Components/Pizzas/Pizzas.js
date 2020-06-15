@@ -8,6 +8,7 @@ import {filterPizza, setComponents, maxPrice} from '../../actions/actionCreater'
 import Checkbox from '../Checkbox/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Slider from "../Slider/Slider";
 
 class Pizzas extends Component{
@@ -282,7 +283,11 @@ class Pizzas extends Component{
                     </select> */}
                     <h2 className="pizza__best">Найпопулярніша піца</h2>
                     <div className="pizza__full__block">
-                    {items}
+                    {/* {items} */}
+                    {items.length == 0 ? <div className="smile_block">
+                    <SentimentVeryDissatisfiedIcon className="sad__smile"/> 
+                    <p className="smile_label">Ви ще не додали жодної піци до корзини</p>
+                    </div> : items}
                     </div>
                 </div>
             </div>
