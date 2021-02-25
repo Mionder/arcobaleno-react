@@ -18,17 +18,19 @@ function App() {
     <Router>
     <div className="App">
     <ScrollToTop>
-      <Header /> 
-        <Route path="/" component={Pizzas} exact/>
-        <Route path="/drinks" component={Drinks} exact/> 
-        <Route path="/cart" component={Cart}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/sales" component={Sales}/>
-        <Route path="/sales:id" component={SingleSale}/>
-        <Route path="/payment" component={Payment} />
-        <Route path="/profile:username" component={Profile} />
-        <Route path="/where_to_buy" component={WhereToBuy} />
-      {/* <Pizzas /> */}
+      <Header />
+        <div className="content-wrapper">
+          <Route path="/" component={Pizzas} exact/>
+          <Route path="/drinks" component={Drinks} exact/>
+          <Route path="/cart" component={Cart}/>
+          <Route path="/login" component={Login}/>
+          <Route path="/sales" component={Sales}/>
+          <Route path="/sales:id" component={SingleSale}/>
+          <Route path="/payment" component={Payment} />
+          {/*<Route path="/profile:username" component={Profile} />*/}
+          <Route path="/where_to_buy" component={WhereToBuy} />
+        {/* <Pizzas /> */}
+        </div>
       <Footer />
       </ScrollToTop>
     </div></Router>

@@ -167,11 +167,11 @@ class Pizza extends Component{
                 <div className="pizza__card">
                     <div className="image_pizza">
                         <img src={src} alt=""/>
-                        <FormControlLabel
-                        control={<Checkbox icon={<FavoriteBorder className="icon_like" fontSize="large"/> } checkedIcon={<Favorite fontSize="large"/>} name="checkedH" />}
-                        className="liked_pizza"
-                        onClick={this.addLikedPizza}
-                    />
+                    {/*    <FormControlLabel*/}
+                    {/*    control={<Checkbox icon={<FavoriteBorder className="icon_like" fontSize="large"/> } checkedIcon={<Favorite fontSize="large"/>} name="checkedH" />}*/}
+                    {/*    className="liked_pizza"*/}
+                    {/*    onClick={this.addLikedPizza}*/}
+                    {/*/>*/}
                         <div className="weigth__pizza"><p className="size_pizza_label">{currentSize.size} г</p></div>
                     </div>
 

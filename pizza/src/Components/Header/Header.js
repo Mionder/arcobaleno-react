@@ -23,7 +23,7 @@ class Header extends Component {
                             <Link className="links" to="/sales"><li className="nav__link">Акції</li></Link>
                             <Link className="links"to="/"><li className="nav__link">Піца</li></Link>
                             <Link className="links"to="/drinks"><li className="nav__link">Напої</li></Link>
-                            <Link className="links" to={((user !== '') && (user !== null)) ? "/profile"+user : "/login"}><li className="nav__link">{((user !== '') && (user !== null)) ? `Привіт, ${user}` : "Авторизація"}</li></Link>
+                            {/*<Link className="links" to={((user !== '') && (user !== null)) ? "/" : "/login"}><li className="nav__link">{((user !== '') && (user !== null)) ? `Привіт, ${user}` : "Авторизація"}</li></Link>*/}
                             <li className="nav__link">
                                <Link to="/cart"> <div className="cart__full">
                                <Link to="/cart">

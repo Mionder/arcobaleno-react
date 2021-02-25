@@ -35,9 +35,8 @@ export default class Drinks extends Component{
         return arr.map(item =>{
             const {name, id, sizeAndPrice,img,type} = item;
             return(
-                <div className="container">
-                    <Drink 
-                        key = {id}
+                <div key = {id} className="container">
+                    <Drink
                         name = {name}
                         id = {id}
                         img = {img}

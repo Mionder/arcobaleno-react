@@ -78,3 +78,13 @@
   .checking_panel {
     display: flex;
     flex-direction: column; } }
+
+@media(max-width: 414px){
+  .find_pizza_label{
+    padding: 5px;
+  }
+  .inputs_search{
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+}

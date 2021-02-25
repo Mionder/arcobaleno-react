@@ -94,14 +94,14 @@ class Cart extends Component{
         localStorage.setItem("payType", this.state.payType);
     }
     getCurrentUser = () => {
-        const {userId} = this.state;
-        Axios.get(`http://localhost:3000/users/${userId}`).then((res =>{
-            this.setState({
-                userBonus: res.data.bonuses,
-                user: res.data
-            })
-            console.log(res.data);
-        }))
+        // const {userId} = this.state;
+        // Axios.get(`http://localhost:3000/users/${userId}`).then((res =>{
+        //     this.setState({
+        //         userBonus: res.data.bonuses,
+        //         user: res.data
+        //     })
+        //     console.log(res.data);
+        // }))
     }
 
     priceCounting = (arr) => {
@@ -234,9 +234,9 @@ class Cart extends Component{
         const {user,bonus, bonusCart} = this.state;
         user.bonuses = user.bonuses - bonusCart + this.props.myBonus;
         console.log(user);
-            await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
-            console.log(res.data)
-        })
+        //     await Axios.put(`http://localhost:3000/users/${idUser}`, JSON.parse(JSON.stringify(user))).then((res)=>{
+        //     console.log(res.data)
+        // })
     }
 
     setMyOrder = async() =>{
@@ -259,8 +259,9 @@ class Cart extends Component{
             // console.log(res.data)
             // })
         }
+        const {isCartStyle} = this.state;
         const {address,house, flat, driveway, floor} = this.state.addressControls;
-        if((address.value === "")||(house.value==="")||(flat.value==="")||(driveway.value==="")||(floor.value==="")){
+        if(((address.value === "")||(house.value==="")||(flat.value==="")||(driveway.value==="")||(floor.value===""))&& isCartStyle){
             this.setState({
                 validation: {
                     type: "error",
@@ -309,7 +310,7 @@ class Cart extends Component{
                     </div>
                     <div className="order__full__price">
                         <p className="full__price">До сплати: {fullCost.toFixed(2)} грн.</p>      
-                        <p className="full__price">Бонусів: {(fullCost.toFixed(2)*0.05).toFixed(2)}</p> 
+                        {/*<p className="full__price">Бонусів: {(fullCost.toFixed(2)*0.05).toFixed(2)}</p> */}
                     </div>
                     <Glovo />
                     <p className="order__label">Оформлення замовлення:</p>
@@ -403,8 +404,8 @@ class Cart extends Component{
                                 <select name="" id="" defaultValue="Оберіть спосіб оплати" className="edit" value={this.state.payType} onChange={this.handlePay}>
                                     <option value=""  disabled>Оберіть спосіб оплати</option>
                                     <option value="cash">Готівка</option>
-                                    <option value="card">Картою кур'єру</option>
-                                    <option value="liqpay">LiqPay</option>
+                                    <option value="card">Картою при отримані</option>
+                                    {/*<option value="liqpay">LiqPay</option>*/}
                                 </select>
                             </div>
                         </div>
@@ -414,7 +415,7 @@ class Cart extends Component{
                         <button className="payment__btn" onClick={this.setMyOrder}>Замовити</button>
                         <div className="right-panel__cart">
                             <p className="full__price">До сплати: {fullCost.toFixed(2) - this.state.bonusCart} грн.</p>
-                            <p className="full__price">Бонусів для списання: <input className="bonus__input" value={this.state.bonusCart} onChange={this.handleBonus} placeholder={userBonus} type="number" min="0" max={userBonus}/></p> 
+                            {/*<p className="full__price">Бонусів для списання: <input className="bonus__input" value={this.state.bonusCart} onChange={this.handleBonus} placeholder={userBonus} type="number" min="0" max={userBonus}/></p> */}
                         </div>
                              
                     </div>

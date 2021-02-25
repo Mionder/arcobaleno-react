@@ -229,37 +229,6 @@ class Pizzas extends Component{
                     { isShowFilter && 
                     <div className="search_and_filter">
 
-                    
-                    {/* <p className="find_pizza_label">Знайди піцу за компонентами</p>
-                    <div className="checkbox__wrapper">
-                    <div className="checkboxed">           
-                        <Checkbox 
-                        label={"Кукурудза"}
-                        />
-                        <Checkbox 
-                        label={"Ананас"}
-                        />
-                        <Checkbox 
-                        label={"Соус Domino's"}
-                        />
-                        <Checkbox 
-                        label={"Пеппероні"}
-                        />
-                        <Checkbox 
-                        label={"Моцарела"}
-                        />
-                        <Checkbox 
-                        label={"Фета"}
-                        />
-                        <Checkbox 
-                        label={"Гриби"}
-                        />
-                        <Checkbox 
-                        label={"Помідори"}
-                        />
-                        <Checkbox 
-                        label={"Бекон"}
-                        /></div></div> */}
                     <div className="checking_panel">
                         
                         <div className="wrapper_checking">

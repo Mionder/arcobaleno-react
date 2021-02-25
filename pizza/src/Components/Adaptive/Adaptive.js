@@ -141,9 +141,10 @@ function PersistentDrawerRight(props) {
         </div>
         <Divider />
         <List>
-          {[{text:'Акції', link:"/sales"}, {text:'Піца', link:"/pizzas"}, {text:'Напої', link:"/drinks"}, {text: current(), link: currentLink()}, {text:'Корзина', link:"/cart"}].map((item, index) => (
+          {/*{text: current(), link: currentLink()}, : index ===3 ? <PersonIcon />*/}
+          {[{text:'Акції', link:"/sales"}, {text:'Піца', link:"/"}, {text:'Напої', link:"/drinks"},  {text:'Корзина', link:"/cart"}].map((item, index) => (
             <ListItem button key={item.text}>
-              <ListItemIcon>{index === 0 ? <AttachMoneyIcon /> : index === 1 ? <LocalPizzaIcon /> : index === 2 ? <LocalDrinkIcon /> : index ===3 ? <PersonIcon /> : index===4 ? <ShoppingCartIcon /> : <InboxIcon />}</ListItemIcon>
+              <ListItemIcon>{index === 0 ? <AttachMoneyIcon /> : index === 1 ? <LocalPizzaIcon /> : index === 2 ? <LocalDrinkIcon />  : index===3 ? <ShoppingCartIcon /> : <InboxIcon />}</ListItemIcon>
               <Link className="links_adaptive" to={item.link}><ListItemText primary={item.text} /></Link>
               {/* <Link to={item.link}><Typography>{item.text}</Typography></Link> */}
             </ListItem>
