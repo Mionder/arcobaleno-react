@@ -13,6 +13,7 @@ import Payment from './Components/Payment/Payment';
 import Profile from './Components/Profile/Profile';
 import ScrollToTop from 'react-router-scroll-top'
 import WhereToBuy from './Components/WhereToBuy/WhereToBuy';
+import Admin from "./Components/Admin/Admin";
 function App() {
   return (
     <Router>
@@ -29,6 +30,7 @@ function App() {
           <Route path="/payment" component={Payment} />
           {/*<Route path="/profile:username" component={Profile} />*/}
           <Route path="/where_to_buy" component={WhereToBuy} />
+          <Route path="/admin" component={Admin} exact />
         {/* <Pizzas /> */}
         </div>
       <Footer />
